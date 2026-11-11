@@ -182,3 +182,4 @@ public partial class ProfileViewModel : ViewModelBase
     [RelayCommand]
     private void Logout() => _router.NavigateTo(new LoginViewModel(_router));
 }
+// Улучшенный личный кабинет
