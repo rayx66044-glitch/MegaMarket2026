@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="megamarket/App.axaml" value="megamarket/megamarket.csproj" />
+        <entry key="megamarket/Views/AdminView.axaml" value="megamarket/megamarket.csproj" />
+        <entry key="megamarket/Views/CartView.axaml" value="megamarket/megamarket.csproj" />
+        <entry key="megamarket/Views/CheckoutView.axaml" value="megamarket/megamarket.csproj" />
+        <entry key="megamarket/Views/Customer/CustomerHomeView.axaml" value="megamarket/megamarket.csproj" />
+        <entry key="megamarket/Views/CustomerHomeView.axaml" value="megamarket/megamarket.csproj" />
+        <entry key="megamarket/Views/LoginView.axaml" value="megamarket/megamarket.csproj" />
+        <entry key="megamarket/Views/MainWindow.axaml" value="megamarket/megamarket.csproj" />
+        <entry key="megamarket/Views/ProductDetailsView.axaml" value="megamarket/megamarket.csproj" />
+        <entry key="megamarket/Views/ProfileView.axaml" value="megamarket/megamarket.csproj" />
+        <entry key="megamarket/Views/SellerAnalyticsView.axaml" value="megamarket/megamarket.csproj" />
+        <entry key="megamarket/Views/SellerWarehouseView.axaml" value="megamarket/megamarket.csproj" />
+      </map>
+    </option>
+  </component>
+</project>

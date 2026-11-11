@@ -1,0 +1,16 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=6e2b6a1e_002D0c8b_002D40dd_002D8ed2_002D3dbe08e72ee6/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="MarketplaceTests #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::C4F46992-2A13-4B4A-AED9-17924381FEE6::net9.0::megamarket.Tests.MarketplaceTests&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=70354aec_002D0f51_002D4bcc_002D8fc7_002D3ed247a6869f/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="MarketplaceTests #3" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::C4F46992-2A13-4B4A-AED9-17924381FEE6::net9.0::megamarket.Tests.MarketplaceTests&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=bc558212_002Dcf7a_002D4a2d_002D986d_002Dc9400714ed82/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="MarketplaceTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::C4F46992-2A13-4B4A-AED9-17924381FEE6::net9.0::megamarket.Tests.MarketplaceTests&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

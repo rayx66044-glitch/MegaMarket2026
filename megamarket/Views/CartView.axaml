@@ -1,0 +1,73 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:megamarket.ViewModels"
+             xmlns:services="using:megamarket.Services"
+             x:Class="megamarket.Views.CartView"
+             x:DataType="vm:CartViewModel"
+             Background="#F5F6FA">
+
+    <Grid RowDefinitions="Auto, *">
+        
+        <Border Grid.Row="0" Background="White" Padding="15" BorderBrush="#E1E3E8" BorderThickness="0,0,0,1">
+            <Button Content="← Назад в каталог" Command="{Binding GoBackCommand}" Background="Transparent" Foreground="#005BFF" FontWeight="Bold"/>
+        </Border>
+
+        <Grid Grid.Row="1" ColumnDefinitions="350, *" ColumnSpacing="20" Margin="30">
+            
+            
+            <Border Grid.Column="0" Background="White" CornerRadius="10" Padding="25" VerticalAlignment="Top" BoxShadow="0 2 10 0 #10000000">
+                <StackPanel Spacing="15">
+                    <TextBlock Text="Итого" FontSize="20" FontWeight="Bold" Foreground="#2C3E50"/>
+                    <TextBlock Text="{Binding FinalTotal, StringFormat='{}{0:C0}'}" FontSize="28" FontWeight="Black" Foreground="#005BFF"/>
+                    
+                    <TextBox Text="{Binding PromoCode}" Watermark="Промокод (SALE10)" CornerRadius="6"/>
+                    <Button Content="Применить" Command="{Binding ApplyPromoCodeCommand}" Background="#E6F0FF" Foreground="#005BFF" CornerRadius="6"/>
+                    <TextBlock Text="{Binding StatusMessage}" Foreground="#FF4D4D" FontSize="12"/>
+                    
+                    <Separator Background="#E1E3E8"/>
+                    
+                    <Button Content="Перейти к оформлению" Command="{Binding GoToCheckoutCommand}" Background="#005BFF" Foreground="White" Height="45" CornerRadius="6" FontWeight="Bold"/>
+                </StackPanel>
+            </Border>
+
+            
+            <Border Grid.Column="1" Background="White" CornerRadius="10" Padding="20" BoxShadow="0 2 10 0 #10000000">
+                <ScrollViewer>
+                    <ItemsControl ItemsSource="{Binding SellerGroups}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:SellerCartGroup">
+                                <StackPanel Spacing="15" Margin="0,0,0,20">
+                                    <TextBlock Text="{Binding SellerName}" FontWeight="Bold" FontSize="16" Foreground="#2C3E50"/>
+                                    <Separator Background="#E1E3E8"/>
+                                    
+                                    <ItemsControl ItemsSource="{Binding Items}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate x:DataType="services:CartItem">
+                                                <Grid ColumnDefinitions="*, Auto, Auto" Margin="0,10">
+                                                    <StackPanel Grid.Column="0" VerticalAlignment="Center" Spacing="5">
+                                                        <TextBlock Text="{Binding Product.Name}" FontWeight="SemiBold" Foreground="#2C3E50"/>
+                                                        <TextBlock Text="{Binding Product.Baseprice, StringFormat='{}{0:C0}'}" Foreground="#7F8C8D" FontSize="12"/>
+                                                    </StackPanel>
+                                                    
+                                                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center" Margin="15,0">
+                                                        <Button Content="−" Width="30" Height="30" Padding="0" Background="#F0F2F5" Foreground="#2C3E50" CornerRadius="4"
+                                                                Command="{Binding $parent[UserControl].((vm:CartViewModel)DataContext).DecreaseQuantityCommand}" CommandParameter="{Binding}"/>
+                                                        <TextBlock Text="{Binding Quantity}" VerticalAlignment="Center" FontWeight="Bold" Foreground="#2C3E50" Width="20" TextAlignment="Center"/>
+                                                        <Button Content="+" Width="30" Height="30" Padding="0" Background="#F0F2F5" Foreground="#2C3E50" CornerRadius="4"
+                                                                Command="{Binding $parent[UserControl].((vm:CartViewModel)DataContext).IncreaseQuantityCommand}" CommandParameter="{Binding}"/>
+                                                    </StackPanel>
+                                                    
+                                                    <Button Grid.Column="2" Content="Удалить" Command="{Binding $parent[UserControl].((vm:CartViewModel)DataContext).RemoveItemCommand}" CommandParameter="{Binding}" Background="Transparent" Foreground="#FF4D4D" FontSize="12"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

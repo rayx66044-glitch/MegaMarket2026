@@ -1,0 +1,64 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:megamarket.ViewModels"
+             x:Class="megamarket.Views.CheckoutView"
+             x:DataType="vm:CheckoutViewModel"
+             Background="#F5F6FA">
+
+    <Grid RowDefinitions="Auto, *">
+        <Border Grid.Row="0" Background="White" Padding="15" BorderBrush="#E1E3E8" BorderThickness="0,0,0,1">
+            <Button Content="← Назад в корзину" Command="{Binding GoBackCommand}" Background="Transparent" Foreground="#005BFF" FontWeight="Bold"/>
+        </Border>
+
+        <ScrollViewer Grid.Row="1" Padding="30">
+            <Grid ColumnDefinitions="350, *" ColumnSpacing="20">
+                
+                
+                <Border Grid.Column="0" Background="White" CornerRadius="10" Padding="25" VerticalAlignment="Top" BoxShadow="0 2 10 0 #10000000">
+                    <StackPanel Spacing="15">
+                        <TextBlock Text="Ваш чек" FontSize="20" FontWeight="Bold" Foreground="#2C3E50"/>
+                        <Separator Background="#E1E3E8"/>
+                        <Grid ColumnDefinitions="*, Auto">
+                            <TextBlock Text="Товары:" Foreground="#7F8C8D"/>
+                            <TextBlock Grid.Column="1" Text="{Binding SubTotal, StringFormat='{}{0:C0}'}" Foreground="#2C3E50"/>
+                        </Grid>
+                        <Grid ColumnDefinitions="*, Auto">
+                            <TextBlock Text="Доставка:" Foreground="#7F8C8D"/>
+                            <TextBlock Grid.Column="1" Text="{Binding DeliveryTotal, StringFormat='{}{0:C0}'}" Foreground="#2C3E50"/>
+                        </Grid>
+                        <Separator Background="#E1E3E8"/>
+                        <Grid ColumnDefinitions="*, Auto">
+                            <TextBlock Text="Итого:" FontSize="18" FontWeight="Bold" Foreground="#2C3E50"/>
+                            <TextBlock Grid.Column="1" Text="{Binding FinalTotal, StringFormat='{}{0:C0}'}" FontSize="22" FontWeight="Black" Foreground="#005BFF"/>
+                        </Grid>
+                        <Button Content="Подтвердить заказ" Command="{Binding SubmitOrderCommand}" Background="#28A745" Foreground="White" Height="45" CornerRadius="6" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding StatusMessage}" Foreground="#28A745" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+
+                
+                <StackPanel Grid.Column="1" Spacing="20">
+                    <Border Background="White" CornerRadius="10" Padding="25" BoxShadow="0 2 10 0 #10000000">
+                        <StackPanel Spacing="15">
+                            <TextBlock Text="Адрес доставки" FontSize="18" FontWeight="Bold" Foreground="#2C3E50"/>
+                            <Grid ColumnDefinitions="*, *" RowDefinitions="Auto, Auto" ColumnSpacing="10" RowSpacing="10">
+                                <TextBox Grid.Row="0" Grid.Column="0" Text="{Binding NewCity}" Watermark="Город" CornerRadius="6"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding NewStreet}" Watermark="Улица" CornerRadius="6"/>
+                                <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding NewHouse}" Watermark="Дом" CornerRadius="6"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding NewApartment}" Watermark="Квартира" CornerRadius="6"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Background="White" CornerRadius="10" Padding="25" BoxShadow="0 2 10 0 #10000000">
+                        <StackPanel Spacing="15">
+                            <TextBlock Text="Бонусные баллы" FontSize="18" FontWeight="Bold" Foreground="#2C3E50"/>
+                            <TextBlock Text="{Binding BonusBalance, StringFormat='Доступно: {0}'}" Foreground="#7F8C8D"/>
+                            <TextBox Text="{Binding UsedBonuses}" Watermark="Сколько списать" CornerRadius="6"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

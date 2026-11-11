@@ -1,0 +1,144 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:megamarket.ViewModels"
+             xmlns:models="using:megamarket.Models"
+             x:Class="megamarket.Views.ProfileView"
+             x:DataType="vm:ProfileViewModel"
+             Background="#F5F6FA">
+
+    <Grid RowDefinitions="Auto, *">
+        
+        <Border Grid.Row="0" Background="White" Padding="15" BorderBrush="#E1E3E8" BorderThickness="0,0,0,1">
+            <Grid ColumnDefinitions="Auto, *, Auto">
+                <Button Grid.Column="0" Content="← Назад" Command="{Binding GoBackCommand}" Background="Transparent" Foreground="#005BFF" FontWeight="Bold"/>
+                <TextBlock Grid.Column="1" Text="Личный кабинет" HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center"/>
+                <Button Grid.Column="2" Content="Выйти" Command="{Binding LogoutCommand}" Background="Transparent" BorderThickness="0" Foreground="#FF4D4D" FontWeight="Bold"/>
+            </Grid>
+        </Border>
+
+        <ScrollViewer Grid.Row="1" Padding="30">
+            <StackPanel Spacing="20" MaxWidth="900">
+                
+                
+                <Border Background="White" CornerRadius="10" Padding="20" BoxShadow="0 2 10 0 #10000000">
+                    <Grid ColumnDefinitions="*, Auto">
+                        <StackPanel>
+                            <TextBlock Text="{Binding UserName}" FontSize="24" FontWeight="Bold" Foreground="#2C3E50"/>
+                            <TextBlock Text="{Binding UserEmail}" Foreground="#7F8C8D"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center">
+                            <TextBlock Text="Бонусные баллы:" Foreground="#7F8C8D" HorizontalAlignment="Right"/>
+                            <TextBlock Text="{Binding BonusBalance, StringFormat='{}{0} ₽'}" FontSize="24" FontWeight="Bold" Foreground="#005BFF" HorizontalAlignment="Right"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                
+                <TextBlock Text="{Binding StatusMessage}" Foreground="#28A745" FontWeight="Bold" 
+                           IsVisible="{Binding StatusMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+
+                
+                <Border Background="White" BorderBrush="#005BFF" BorderThickness="2" CornerRadius="10" Padding="20" 
+                        IsVisible="{Binding IsReviewing}" BoxShadow="0 4 15 0 #20000000">
+                    <StackPanel Spacing="15">
+                        <TextBlock Text="{Binding ReviewProductName, StringFormat='Отзыв на: {0}'}" FontSize="18" FontWeight="Bold" Foreground="#005BFF"/>
+                        
+                        <StackPanel Spacing="5">
+                            <TextBlock Text="Оценка" FontWeight="SemiBold"/>
+                            
+                            
+                            <ComboBox SelectedItem="{Binding ReviewRating, Mode=TwoWay}" HorizontalAlignment="Stretch">
+                                <ComboBoxItem Content="5"/>
+                                <ComboBoxItem Content="4"/>
+                                <ComboBoxItem Content="3"/>
+                                <ComboBoxItem Content="2"/>
+                                <ComboBoxItem Content="1"/>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <StackPanel Spacing="5">
+                            <TextBlock Text="Текст отзыва" FontWeight="SemiBold"/>
+                            <TextBox Text="{Binding ReviewText}" AcceptsReturn="True" Height="100" Watermark="Поделитесь впечатлениями..." TextWrapping="Wrap" CornerRadius="6"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right">
+                            <Button Content="Отмена" Command="{Binding CancelReviewCommand}" Background="Transparent" BorderThickness="1" CornerRadius="6" Padding="15,5"/>
+                            <Button Content="Отправить" Command="{Binding SubmitReviewCommand}" Background="#005BFF" Foreground="White" FontWeight="Bold" Padding="20,5" CornerRadius="6"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <TextBlock Text="История заказов" FontSize="22" FontWeight="Bold" Foreground="#2C3E50" Margin="0,10,0,0"/>
+
+                <ItemsControl ItemsSource="{Binding Orders}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="models:Order">
+                            <Border Background="White" CornerRadius="10" Padding="20" Margin="0,0,0,15" BoxShadow="0 2 10 0 #10000000">
+                                <StackPanel Spacing="15">
+                                    
+                                    
+                                    <Grid ColumnDefinitions="*, Auto, Auto">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Id, StringFormat='Заказ №{0}'}" FontWeight="Bold" FontSize="16" Foreground="#2C3E50"/>
+                                            <TextBlock Text="{Binding Orderdate, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}" Foreground="#7F8C8D" FontSize="12"/>
+                                        </StackPanel>
+                                        
+                                        <TextBlock Grid.Column="1" Text="{Binding Totalprice, StringFormat='{}{0:C0}'}" FontWeight="Bold" FontSize="18" Foreground="#005BFF" VerticalAlignment="Center" Margin="15,0"/>
+                                        
+                                        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="5">
+                                            <Button Content="Отменить" Command="{Binding $parent[ItemsControl].((vm:ProfileViewModel)DataContext).CancelOrderCommand}" CommandParameter="{Binding}" IsVisible="{Binding Statusid, Converter={x:Static vm:IsAssemblingConverter.Instance}}" Background="Transparent" BorderBrush="#FF4D4D" BorderThickness="1" Foreground="#FF4D4D" CornerRadius="4" Padding="10,5"/>
+                                            <Button Content="🗑 Скрыть" Command="{Binding $parent[ItemsControl].((vm:ProfileViewModel)DataContext).HideOrderCommand}" CommandParameter="{Binding}" IsVisible="{Binding Statusid, Converter={x:Static vm:IsCancelledConverter.IsCancelled}}" Background="Transparent" BorderBrush="Gray" BorderThickness="1" Foreground="Gray" CornerRadius="4" Padding="10,5"/>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    
+                                    <Border Background="#F8F9FA" CornerRadius="8" Padding="15" IsVisible="{Binding Statusid, Converter={x:Static vm:IsCancelledConverter.IsNotCancelled}}">
+                                        <Grid ColumnDefinitions="*, *, *">
+                                            <StackPanel Grid.Column="0" Spacing="5" HorizontalAlignment="Center">
+                                                <Ellipse Width="20" Height="20" Fill="#005BFF"/>
+                                                <TextBlock Text="Сборка" FontSize="12" Foreground="#005BFF" FontWeight="Bold"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="1" Spacing="5" HorizontalAlignment="Center">
+                                                <Ellipse Width="20" Height="20" Fill="{Binding Statusid, Converter={x:Static vm:OrderStatusConverter.InTransitBrush}}"/>
+                                                <TextBlock Text="В пути" FontSize="12" Foreground="{Binding Statusid, Converter={x:Static vm:OrderStatusConverter.InTransitBrush}}"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="2" Spacing="5" HorizontalAlignment="Center">
+                                                <Ellipse Width="20" Height="20" Fill="{Binding Statusid, Converter={x:Static vm:OrderStatusConverter.DeliveredBrush}}"/>
+                                                <TextBlock Text="Доставлено" FontSize="12" FontWeight="Bold" Foreground="#28A745" IsVisible="{Binding Statusid, Converter={x:Static vm:IsDeliveredConverter.Instance}}"/>
+                                                <TextBlock Text="Получено" FontSize="12" FontWeight="Bold" Foreground="#28A745" IsVisible="{Binding Statusid, Converter={x:Static vm:IsReceivedConverter.Instance}}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+
+                                    
+                                    <Border Background="#FFF0F0" CornerRadius="8" Padding="15" BorderBrush="#FF4D4D" BorderThickness="1" IsVisible="{Binding Statusid, Converter={x:Static vm:IsCancelledConverter.IsCancelled}}">
+                                        <TextBlock Text="Заказ отменен" Foreground="#FF4D4D" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center"/>
+                                    </Border>
+
+                                    
+                                    <ItemsControl ItemsSource="{Binding Orderitems}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate x:DataType="models:Orderitem">
+                                                <Grid ColumnDefinitions="*, Auto, Auto" Margin="0,5" VerticalAlignment="Center">
+                                                    <TextBlock Grid.Column="0" Text="{Binding Product.Name, StringFormat='• {0}'}" Foreground="#2C3E50" VerticalAlignment="Center"/>
+                                                    <TextBlock Grid.Column="1" Text="{Binding Quantity, StringFormat='{}{0} шт.'}" Foreground="#7F8C8D" Margin="10,0"/>
+                                                    
+                                                    
+                                                    <Button Grid.Column="2" Content="⭐ Оставить отзыв" 
+                                                            Click="OnReviewClick"
+                                                            Tag="{Binding}"
+                                                            Background="#FFB800" Foreground="White" 
+                                                            FontSize="11" Padding="8,3" CornerRadius="4"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

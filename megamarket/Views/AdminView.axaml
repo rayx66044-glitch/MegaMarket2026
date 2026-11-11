@@ -1,0 +1,147 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:megamarket.ViewModels"
+             xmlns:models="using:megamarket.Models"
+             x:Class="megamarket.Views.AdminView"
+             x:DataType="vm:AdminViewModel"
+             Background="#F5F6FA">
+
+    <Grid RowDefinitions="Auto, *">
+        
+        <Border Grid.Row="0" Background="White" Padding="15" BorderBrush="#E1E3E8" BorderThickness="0,0,0,1">
+            <Grid ColumnDefinitions="Auto, *, Auto">
+                <TextBlock Text="Админ-панель" Foreground="#005BFF" FontWeight="Bold" FontSize="18" VerticalAlignment="Center"/>
+                
+                
+                <TextBlock Grid.Column="1" Text="{Binding StatusMessage}" Foreground="#28A745" FontWeight="Bold" 
+                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                
+                <Button Grid.Column="2" Content="Выход" Command="{Binding GoBackCommand}" Background="Transparent" Foreground="#FF4D4D" FontWeight="Bold"/>
+            </Grid>
+        </Border>
+
+        <TabControl Grid.Row="1" Margin="20" Background="Transparent">
+            
+            
+            <TabItem Header="📝 Модерация" Foreground="#2C3E50" FontSize="15" FontWeight="Bold">
+                <Border Background="White" CornerRadius="10" Padding="20" Margin="0,20,0,0" BoxShadow="0 2 10 0 #10000000">
+                    <ScrollViewer>
+                        
+                        <StackPanel>
+                            <ItemsControl ItemsSource="{Binding PendingProducts}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="models:Product">
+                                        <Border Background="#F8F9FA" BorderBrush="#E1E3E8" BorderThickness="1" CornerRadius="8" Padding="15" Margin="0,0,0,10">
+                                            <Grid ColumnDefinitions="*, Auto">
+                                                <StackPanel Grid.Column="0" Spacing="5">
+                                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="16" Foreground="#2C3E50"/>
+                                                    <TextBlock Text="{Binding Seller.Companyname, StringFormat='Продавец: {0}'}" Foreground="#7F8C8D" FontSize="12"/>
+                                                    <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Foreground="#2C3E50"/>
+                                                    
+                                                    
+                                                    <ItemsControl ItemsSource="{Binding Productcharacteristics}" Margin="0,5,0,0">
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate x:DataType="models:Productcharacteristic">
+                                                                <TextBlock FontSize="12" Foreground="#555">
+                                                                    <Run Text="{Binding Keyname}" FontWeight="SemiBold"/>
+                                                                    <Run Text=": "/>
+                                                                    <Run Text="{Binding Value}"/>
+                                                                </TextBlock>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                </StackPanel>
+                                                
+                                                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+                                                    <Button Content=" Одобрить" Command="{Binding $parent[ItemsControl].((vm:AdminViewModel)DataContext).ApproveProductCommand}" CommandParameter="{Binding}" Background="#28A745" Foreground="White" FontWeight="Bold" Padding="15,10" CornerRadius="6"/>
+                                                    <Button Content=" Отклонить" Command="{Binding $parent[ItemsControl].((vm:AdminViewModel)DataContext).RejectProductCommand}" CommandParameter="{Binding}" Background="#FF4D4D" Foreground="White" FontWeight="Bold" Padding="15,10" CornerRadius="6"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            
+                            <TextBlock Text="Нет товаров на модерации" Foreground="#7F8C8D" IsVisible="{Binding !PendingProducts.Count}" HorizontalAlignment="Center" Margin="0,20,0,0"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+            </TabItem>
+
+            
+            <TabItem Header="👥 Пользователи" Foreground="#2C3E50" FontSize="15" FontWeight="Bold">
+                <Border Background="White" CornerRadius="10" Padding="20" Margin="0,20,0,0" BoxShadow="0 2 10 0 #10000000">
+                    <ScrollViewer>
+                        <ItemsControl ItemsSource="{Binding UsersList}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="models:User">
+                                    <Border BorderBrush="#E1E3E8" BorderThickness="0,0,0,1" Padding="0,10">
+                                        <Grid ColumnDefinitions="*, Auto, Auto">
+                                            <TextBlock Text="{Binding Email}" Foreground="#2C3E50" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                                            <TextBlock Grid.Column="1" Text="Забанен" Foreground="#FF4D4D" FontWeight="Bold" Margin="10,0" VerticalAlignment="Center" IsVisible="{Binding Isbanned}"/>
+                                            <Button Grid.Column="2" Content="Бан/Разбан" Command="{Binding $parent[ItemsControl].((vm:AdminViewModel)DataContext).ToggleBanCommand}" CommandParameter="{Binding}" Background="#E6F0FF" Foreground="#005BFF" CornerRadius="4"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Border>
+            </TabItem>
+            
+            
+            <TabItem Header="📍 Адреса" Foreground="#2C3E50" FontSize="15" FontWeight="Bold">
+                <Grid ColumnDefinitions="320, *" ColumnSpacing="20" Margin="0,20,0,0">
+                    
+                    <Border Grid.Column="0" Background="White" CornerRadius="10" Padding="20" VerticalAlignment="Top" BoxShadow="0 2 10 0 #10000000">
+                        <ScrollViewer>
+                            <Grid>
+                                <StackPanel Spacing="10" IsVisible="{Binding !IsEditingAddress}">
+                                    <TextBlock Text="Новый адрес" FontWeight="Bold" Foreground="#2C3E50"/>
+                                    <TextBox Text="{Binding NewCity}" Watermark="Город" CornerRadius="6"/>
+                                    <TextBox Text="{Binding NewStreet}" Watermark="Улица" CornerRadius="6"/>
+                                    <TextBox Text="{Binding NewHouse}" Watermark="Дом" CornerRadius="6"/>
+                                    <Button Content="Добавить" Command="{Binding AddAddressCommand}" Background="#005BFF" Foreground="White" CornerRadius="6"/>
+                                </StackPanel>
+
+                                <StackPanel Spacing="10" IsVisible="{Binding IsEditingAddress}">
+                                    <TextBlock Text="Редактировать" FontWeight="Bold" Foreground="#005BFF"/>
+                                    <TextBox Text="{Binding EditCity}" Watermark="Город" CornerRadius="6"/>
+                                    <TextBox Text="{Binding EditStreet}" Watermark="Улица" CornerRadius="6"/>
+                                    <TextBox Text="{Binding EditHouse}" Watermark="Дом" CornerRadius="6"/>
+                                    <TextBox Text="{Binding EditApartment}" Watermark="Квартира" CornerRadius="6"/>
+                                    <StackPanel Orientation="Horizontal" Spacing="10">
+                                        <Button Content="Сохранить" Command="{Binding SaveAddressCommand}" Background="#28A745" Foreground="White" CornerRadius="6"/>
+                                        <Button Content="Отмена" Command="{Binding CancelEditAddressCommand}" Background="#BDC3C7" Foreground="White" CornerRadius="6"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Grid>
+                        </ScrollViewer>
+                    </Border>
+
+                    
+                    <Border Grid.Column="1" Background="White" CornerRadius="10" Padding="20" BoxShadow="0 2 10 0 #10000000">
+                        <ScrollViewer>
+                            <ItemsControl ItemsSource="{Binding AddressesList}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="models:Address">
+                                        <Border BorderBrush="#E1E3E8" BorderThickness="0,0,0,1" Padding="0,10">
+                                            <Grid ColumnDefinitions="*, Auto, Auto">
+                                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding City}" FontWeight="Bold" Foreground="#2C3E50"/>
+                                                    <TextBlock Text="{Binding Street, StringFormat='ул. {0}'}" Foreground="#7F8C8D" FontSize="12"/>
+                                                </StackPanel>
+                                                <Button Grid.Column="1" Content="✏️" Command="{Binding $parent[ItemsControl].((vm:AdminViewModel)DataContext).EditAddressCommand}" CommandParameter="{Binding}" Background="#E6F0FF" Foreground="#005BFF" Margin="0,0,5,0" CornerRadius="4"/>
+                                                <Button Grid.Column="2" Content="🗑" Command="{Binding $parent[ItemsControl].((vm:AdminViewModel)DataContext).DeleteAddressCommand}" CommandParameter="{Binding}" Background="#FF4D4D" Foreground="White" CornerRadius="4"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Border>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

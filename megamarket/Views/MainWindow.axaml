@@ -1,0 +1,16 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:megamarket.ViewModels"
+        xmlns:local="using:megamarket"
+        x:Class="megamarket.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="МегаМаркет-Линк"
+        Width="1100" Height="750"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.DataTemplates>
+        <local:ViewLocator/>
+    </Window.DataTemplates>
+
+    <ContentControl Content="{Binding CurrentPage}" />
+</Window>

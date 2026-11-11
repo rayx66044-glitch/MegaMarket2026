@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "megamarket", "megamarket\megamarket.csproj", "{D1C3AB1D-7748-469B-8741-A7AA680EBF33}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "megamarket.Tests", "megamarket.Tests\megamarket.Tests.csproj", "{C4F46992-2A13-4B4A-AED9-17924381FEE6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D1C3AB1D-7748-469B-8741-A7AA680EBF33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1C3AB1D-7748-469B-8741-A7AA680EBF33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1C3AB1D-7748-469B-8741-A7AA680EBF33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1C3AB1D-7748-469B-8741-A7AA680EBF33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4F46992-2A13-4B4A-AED9-17924381FEE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4F46992-2A13-4B4A-AED9-17924381FEE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4F46992-2A13-4B4A-AED9-17924381FEE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4F46992-2A13-4B4A-AED9-17924381FEE6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

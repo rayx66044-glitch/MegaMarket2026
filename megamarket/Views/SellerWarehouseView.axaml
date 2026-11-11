@@ -1,0 +1,164 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:megamarket.ViewModels"
+             xmlns:models="using:megamarket.Models"
+             x:Class="megamarket.Views.SellerWarehouseView"
+             x:DataType="vm:SellerWarehouseViewModel"
+             Background="#F5F6FA">
+
+    <Grid RowDefinitions="Auto, *">
+        
+        <Border Grid.Row="0" Background="White" Padding="15" BorderBrush="#E1E3E8" BorderThickness="0,0,0,1">
+            <Grid ColumnDefinitions="Auto, *, Auto, Auto">
+                <TextBlock Text="Кабинет продавца" FontWeight="Bold" FontSize="18" Foreground="#2C3E50" VerticalAlignment="Center"/>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="15" HorizontalAlignment="Center">
+                    <Button Content="Аналитика" Command="{Binding GoToAnalyticsCommand}" Background="Transparent" Foreground="#005BFF" FontWeight="SemiBold"/>
+                    <Button Content="Назад" Command="{Binding GoBackCommand}" Background="Transparent" Foreground="#005BFF" FontWeight="SemiBold"/>
+                </StackPanel>
+                <Button Grid.Column="2" Content="Выйти" Command="{Binding LogoutCommand}" Background="Transparent" BorderThickness="0" Foreground="#FF4D4D" FontWeight="Bold"/>
+            </Grid>
+        </Border>
+
+        <TabControl Grid.Row="1" Margin="20" Background="Transparent">
+            
+            
+            <TabItem Header="Товары" Foreground="#2C3E50" FontSize="15" FontWeight="Bold">
+                <Grid ColumnDefinitions="380, *" ColumnSpacing="20" Margin="0,20,0,0">
+                    
+                    
+                    <Border Grid.Column="0" Background="White" CornerRadius="10" Padding="20" BoxShadow="0 2 10 0 #10000000" VerticalAlignment="Top">
+                        <ScrollViewer>
+                            <Grid>
+                                
+                                <StackPanel Spacing="15" IsVisible="{Binding !IsEditing}">
+                                    <TextBlock Text="Добавить товар" FontSize="18" FontWeight="Bold" Foreground="#2C3E50"/>
+                                    
+                                    <ComboBox ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" PlaceholderText="Категория" CornerRadius="6">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate x:DataType="models:Category">
+                                                <TextBlock Text="{Binding Name}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    
+                                    <TextBox Text="{Binding NewName}" Watermark="Название" CornerRadius="6"/>
+                                    <TextBox Text="{Binding NewSku}" Watermark="Артикул" CornerRadius="6"/>
+                                    <TextBox Text="{Binding NewPrice}" Watermark="Цена" CornerRadius="6"/>
+                                    <TextBox Text="{Binding NewDescription}" Watermark="Описание" AcceptsReturn="True" Height="80" CornerRadius="6"/>
+                                    <Button Content="Отправить на модерацию" Command="{Binding AddProductCommand}" Background="#005BFF" Foreground="White" Height="40" CornerRadius="6"/>
+                                    <TextBlock Text="{Binding StatusMessage}" Foreground="#28A745" FontWeight="Bold"/>
+                                </StackPanel>
+
+                                
+                                <StackPanel Spacing="15" IsVisible="{Binding IsEditing}">
+                                    <TextBlock Text="Редактировать" FontSize="18" FontWeight="Bold" Foreground="#005BFF"/>
+                                    <TextBox Text="{Binding EditName}" Watermark="Название" CornerRadius="6"/>
+                                    <TextBox Text="{Binding EditDescription}" Watermark="Описание" AcceptsReturn="True" Height="80" CornerRadius="6"/>
+                                    <TextBox Text="{Binding EditPrice}" Watermark="Цена" CornerRadius="6"/>
+                                    
+                                    <TextBlock Text="Характеристики" FontWeight="Bold" Foreground="#7F8C8D" Margin="0,5,0,0"/>
+                                    <ScrollViewer MaxHeight="150">
+                                        <ItemsControl ItemsSource="{Binding EditCharacteristics}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate x:DataType="vm:EditableCharacteristic">
+                                                    <Grid ColumnDefinitions="*, *, Auto" ColumnSpacing="5" Margin="0,0,0,5">
+                                                        <TextBox Grid.Column="0" Text="{Binding Key}" Watermark="Ключ" CornerRadius="4"/>
+                                                        <TextBox Grid.Column="1" Text="{Binding Value}" Watermark="Значение" CornerRadius="4"/>
+                                                        <Button Grid.Column="2" Content="✖" Command="{Binding $parent[ItemsControl].((vm:SellerWarehouseViewModel)DataContext).RemoveCharacteristicCommand}" CommandParameter="{Binding}" Background="Transparent" Foreground="#FF4D4D"/>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </ScrollViewer>
+                                    
+                                    <Button Content="+ Добавить характеристику" Command="{Binding AddCharacteristicCommand}" Background="#E6F0FF" Foreground="#005BFF" Height="30" CornerRadius="4"/>
+                                    <Button Content="Сохранить и на модерацию" Command="{Binding SaveProductCommand}" Background="#28A745" Foreground="White" Height="40" CornerRadius="6"/>
+                                    <Button Content="Отмена" Command="{Binding CancelEditCommand}" Background="#BDC3C7" Foreground="White" Height="40" CornerRadius="6"/>
+                                </StackPanel>
+                            </Grid>
+                        </ScrollViewer>
+                    </Border>
+
+                    
+                    <Border Grid.Column="1" Background="White" CornerRadius="10" Padding="20" BoxShadow="0 2 10 0 #10000000">
+                        <Grid RowDefinitions="Auto, *">
+                            <StackPanel Orientation="Horizontal" Spacing="10" Margin="0,0,0,15">
+                                <TextBlock Text="Склад:" VerticalAlignment="Center" FontWeight="Bold"/>
+                                <ComboBox ItemsSource="{Binding Warehouses}" SelectedItem="{Binding SelectedWarehouse}" Width="200" CornerRadius="6">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate x:DataType="models:Warehouse">
+                                            <TextBlock Text="{Binding Warehousename}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                                <Button Content="💾 Сохранить остатки" Command="{Binding SaveStocksCommand}" Background="#28A745" Foreground="White" CornerRadius="6"/>
+                            </StackPanel>
+
+                            <ScrollViewer Grid.Row="1">
+                                <ItemsControl ItemsSource="{Binding Stocks}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="models:Productstock">
+                                            <Border BorderBrush="#E1E3E8" BorderThickness="0,0,0,1" Padding="0,10">
+                                                <Grid ColumnDefinitions="*, Auto, Auto, Auto, Auto">
+                                                    <StackPanel Grid.Column="0" Spacing="3">
+                                                        <StackPanel Orientation="Horizontal" Spacing="8">
+                                                            <TextBlock Text="{Binding Product.Name}" FontWeight="Bold" Foreground="#2C3E50"/>
+                                                            
+                                                            
+                                                            <Border Background="#FFB800" CornerRadius="4" Padding="4,2" IsVisible="{Binding Product.Statusid, Converter={x:Static vm:StatusEqualsConverter.OnModeration}}">
+                                                                <TextBlock Text="В модерации" Foreground="White" FontSize="10" FontWeight="Bold"/>
+                                                            </Border>
+                                                            <Border Background="#28A745" CornerRadius="4" Padding="4,2" IsVisible="{Binding Product.Statusid, Converter={x:Static vm:StatusEqualsConverter.Active}}">
+                                                                <TextBlock Text="Товар на рынке" Foreground="White" FontSize="10" FontWeight="Bold"/>
+                                                            </Border>
+                                                            <Border Background="#FF4D4D" CornerRadius="4" Padding="4,2" IsVisible="{Binding Product.Statusid, Converter={x:Static vm:StatusEqualsConverter.Draft}}">
+                                                                <TextBlock Text="Отклонен" Foreground="White" FontSize="10" FontWeight="Bold"/>
+                                                            </Border>
+                                                        </StackPanel>
+                                                        <TextBlock Text="{Binding Product.Sku, StringFormat='Артикул: {0}'}" FontSize="11" Foreground="#7F8C8D"/>
+                                                    </StackPanel>
+                                                    
+                                                    <TextBox Grid.Column="1" Text="{Binding Quantityinstock, Mode=TwoWay}" Width="60" Margin="10,0" CornerRadius="4" VerticalAlignment="Center"/>
+                                                    <TextBlock Grid.Column="2" Text="⚠️" Foreground="#FF4D4D" VerticalAlignment="Center" Margin="5,0" IsVisible="{Binding Quantityinstock, Converter={x:Static vm:LowStockConverter.Instance}}"/>
+                                                    <Button Grid.Column="3" Content="Ред." Command="{Binding $parent[ItemsControl].((vm:SellerWarehouseViewModel)DataContext).EditProductCommand}" CommandParameter="{Binding}" Background="#E6F0FF" Foreground="#005BFF" Margin="0,0,5,0" CornerRadius="4"/>
+                                                    <Button Grid.Column="4" Content="🗑" Command="{Binding $parent[ItemsControl].((vm:SellerWarehouseViewModel)DataContext).DeleteProductCommand}" CommandParameter="{Binding}" Background="#FF4D4D" Foreground="White" CornerRadius="4"/>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </TabItem>
+
+            
+            <TabItem Header="Заказы" Foreground="#2C3E50" FontSize="15" FontWeight="Bold">
+                <Border Background="White" CornerRadius="10" Padding="20" Margin="0,20,0,0" BoxShadow="0 2 10 0 #10000000">
+                    <ScrollViewer>
+                        <ItemsControl ItemsSource="{Binding Orders}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="models:Order">
+                                    <Border BorderBrush="#E1E3E8" BorderThickness="0,0,0,1" Padding="0,10">
+                                        <Grid ColumnDefinitions="*, Auto, Auto">
+                                            <TextBlock Text="{Binding Id, StringFormat='Заказ №{0}'}" Foreground="#2C3E50" VerticalAlignment="Center"/>
+                                            <ComboBox Grid.Column="1" ItemsSource="{Binding $parent[ItemsControl].((vm:SellerWarehouseViewModel)DataContext).OrderStatusesDicts}" SelectedValue="{Binding Statusid, Mode=TwoWay}" SelectedValueBinding="{Binding Id}" Width="150" Margin="10,0" CornerRadius="6">
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate x:DataType="models:Orderstatusesdict">
+                                                        <TextBlock Text="{Binding Statusname}"/>
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                            </ComboBox>
+                                            <Button Grid.Column="2" Content="Обновить" Command="{Binding $parent[ItemsControl].((vm:SellerWarehouseViewModel)DataContext).ChangeOrderStatusCommand}" CommandParameter="{Binding}" Background="#005BFF" Foreground="White" CornerRadius="6"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Border>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

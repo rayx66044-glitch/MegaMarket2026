@@ -1,0 +1,103 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:megamarket.ViewModels"
+             xmlns:models="using:megamarket.Models"
+             x:Class="megamarket.Views.ProductDetailsView"
+             x:DataType="vm:ProductDetailsViewModel"
+             Background="#F5F6FA">
+
+    <Grid RowDefinitions="Auto, *">
+        
+        <Border Grid.Row="0" Background="White" Padding="15" BorderBrush="#E1E3E8" BorderThickness="0,0,0,1">
+            <Button Content="← Назад в каталог" Command="{Binding GoBackCommand}" Background="Transparent" Foreground="#005BFF" FontWeight="Bold"/>
+        </Border>
+
+        <ScrollViewer Grid.Row="1" Padding="30">
+            <Grid ColumnDefinitions="*, 400" ColumnSpacing="40">
+                
+                
+                <StackPanel Grid.Column="0" Spacing="20">
+                    <TextBlock Text="{Binding CurrentProduct.Name}" FontSize="28" FontWeight="Bold" Foreground="#2C3E50" TextWrapping="Wrap"/>
+                    <TextBlock Text="{Binding CurrentProduct.Seller.Companyname}" Foreground="#7F8C8D" FontSize="14"/>
+                    
+                    <TextBlock Text="{Binding CurrentProduct.Baseprice, StringFormat='{}{0:C0}'}" FontSize="32" FontWeight="Black" Foreground="#005BFF" Margin="0,10"/>
+
+                    
+                    <StackPanel Orientation="Horizontal" Spacing="15" Margin="0,0,0,20">
+                        <Button Content="Добавить в корзину" Command="{Binding AddToCartCommand}" Background="#005BFF" Foreground="White" FontSize="16" FontWeight="Bold" Padding="25,12" CornerRadius="6"/>
+                        <Button Content="Перейти в корзину" Command="{Binding GoToCartCommand}" Background="#E6F0FF" Foreground="#005BFF" FontSize="16" FontWeight="Bold" Padding="25,12" CornerRadius="6"/>
+                    </StackPanel>
+
+                    
+                    <TabControl SelectedIndex="{Binding SelectedTabIndex}" Background="Transparent">
+                        
+                        
+                        <TabItem Header="Описание" Foreground="#2C3E50" FontSize="15" FontWeight="SemiBold">
+                            <Border Background="White" CornerRadius="10" Padding="20" Margin="0,15,0,0" BoxShadow="0 2 10 0 #10000000">
+                                <TextBlock Text="{Binding CurrentProduct.Description}" TextWrapping="Wrap" Foreground="#2C3E50" LineHeight="24"/>
+                            </Border>
+                        </TabItem>
+
+                        
+                        <TabItem Header="Характеристики" Foreground="#2C3E50" FontSize="15" FontWeight="SemiBold">
+                            <Border Background="White" CornerRadius="10" Padding="20" Margin="0,15,0,0" BoxShadow="0 2 10 0 #10000000">
+                                
+                                <ScrollViewer>
+                                    <ItemsControl ItemsSource="{Binding CurrentProduct.Productcharacteristics}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate x:DataType="models:Productcharacteristic">
+                                                <Grid ColumnDefinitions="180, *" Margin="0,8">
+                                                    <TextBlock Grid.Column="0" Text="{Binding Keyname}" Foreground="#7F8C8D" FontWeight="SemiBold"/>
+                                                    <TextBlock Grid.Column="1" Text="{Binding Value}" Foreground="#2C3E50" TextWrapping="Wrap"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </ScrollViewer>
+                            </Border>
+                        </TabItem>
+
+                        
+                        <TabItem Header="Отзывы" Foreground="#2C3E50" FontSize="15" FontWeight="SemiBold">
+                            <Border Background="White" CornerRadius="10" Padding="20" Margin="0,15,0,0" BoxShadow="0 2 10 0 #10000000">
+                                <ScrollViewer>
+                                    <StackPanel>
+                                        <ItemsControl ItemsSource="{Binding CurrentProduct.Reviews}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate x:DataType="models:Review">
+                                                    <Border Background="#F8F9FA" Padding="15" CornerRadius="8" Margin="0,0,0,10" BorderBrush="#E1E3E8" BorderThickness="1">
+                                                        <StackPanel Spacing="8">
+                                                            
+                                                            
+                                                            <StackPanel Orientation="Horizontal" Spacing="5">
+                                                                <TextBlock Text="Оценка:" FontWeight="Bold" Foreground="#2C3E50"/>
+                                                                <TextBlock Text="{Binding Rating, StringFormat='{}{0} ⭐'}" Foreground="#FFB800" FontWeight="Bold" FontSize="14"/>
+                                                            </StackPanel>
+                                                            
+                                                            
+                                                            <TextBlock Text="{Binding Textreview}" TextWrapping="Wrap" Foreground="#2C3E50"/>
+                                                            
+                                                        </StackPanel>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                        
+                                        <TextBlock Text="Отзывов пока нет. Будьте первым!" Foreground="#7F8C8D" 
+                                                   IsVisible="{Binding !CurrentProduct.Reviews.Count}" Margin="0,10,0,0"/>
+                                    </StackPanel>
+                                </ScrollViewer>
+                            </Border>
+                        </TabItem>
+                    </TabControl>
+                </StackPanel>
+
+                
+                <Border Grid.Column="1" Background="White" CornerRadius="12" Height="400" VerticalAlignment="Top" BoxShadow="0 4 15 0 #15000000">
+                    <TextBlock Text="{Binding CurrentProduct.Categoryid, Converter={x:Static vm:CategoryIconConverter.Instance}}" 
+                               FontSize="150" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</UserControl>
