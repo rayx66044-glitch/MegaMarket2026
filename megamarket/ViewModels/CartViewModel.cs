@@ -208,3 +208,4 @@ public partial class CartViewModel : ViewModelBase
     [RelayCommand]
     private void GoBack() => _router.NavigateTo(new CustomerHomeViewModel(_router, _currentUser));
 }
+// Улучшенная логика корзины
